@@ -18,6 +18,9 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+.PHONY:all
+all:build-meta build-app
+
 .PHONY:build-meta
 build-meta:meta/smes-build
 
@@ -41,8 +44,25 @@ meta/poky/meta-smes:meta/poky/bitbake
 meta/poky/bitbake:
 	git submodule update --init --recursive
 
+
+.PHONY:build-app
+build-app:app/openauto/bin/autoapp
+
+app/openauto/bin/autoapp:app/openauto/bin/Makefile
+	pushd app/openauto/bin; \
+		make autoapp
+
+app/openauto/bin/Makefile:app/openauto/CMakeLists.txt
+	mkdir -p app/openauto/bin
+	pushd app/openauto/bin; \
+		cmake ../
+
+app/openauto/CMakeLists.txt:
+	git submodule update --init --recursive
+
 .PHONY:clean
 clean:
 	rm -rf meta/poky/meta-freescale
 	rm -rf meta/poky/meta-smes
 	rm -rf meta/smes-build
+	rm -rf app/openauto/bin
