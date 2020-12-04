@@ -1,2 +1,4 @@
 meta/smes-build/
 .vscode/
+meta/poky/meta-freescale
+meta/poky/meta-smes
