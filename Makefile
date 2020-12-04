@@ -19,13 +19,14 @@
 # SOFTWARE.
 
 .PHONY:build-meta
+build-meta:meta/smes-build
 
-
-meta/smes-build:
+meta/smes-build:meta/poky/meta-freescale meta/poky/meta-smes
 	mkdir -p meta/smes-build
 	pushd meta/smes-build; \
 		sed -i 's/poky/smes/g' ../poky/.templateconf; \
-		. ../poky/oe-init-build-env .
+		. ../poky/oe-init-build-env .; \
+		bitbake core-image-smes
 
 
 .PHONY:download-meta
@@ -44,3 +45,4 @@ meta/poky/bitbake:
 clean:
 	rm -rf meta/poky/meta-freescale
 	rm -rf meta/poky/meta-smes
+	rm -rf meta/smes-build
